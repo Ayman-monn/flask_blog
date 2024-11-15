@@ -1,0 +1,6 @@
+# Environment
+.env
+plan.txt 
+.vscode  
+__pycache__
+venv
