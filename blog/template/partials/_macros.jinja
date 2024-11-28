@@ -1,0 +1,18 @@
+{# form macro #}
+
+
+{% macro form_macro(field_name) %}
+    <div class="form-group">
+        {{ field_name.label(class='form-control-label') }}
+        {{ field_name(class='form-control form-control-lg')}}
+        {% if field_name.errors %}
+        <ul class="errors">
+            {% for error in field_name.errors %}
+            <li class="text-danger">
+                {{ error }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+{% endmacro %}

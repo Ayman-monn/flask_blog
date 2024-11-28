@@ -1,8 +1,9 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate
 from flask_seeder import FlaskSeeder
+from flask_login import LoginManager
 from blog.config import DevelopmentCfg, ProductionCfg 
 
 
@@ -15,17 +16,24 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 migrate = Migrate() 
 seeder = FlaskSeeder() 
+login_manager = LoginManager() 
+
+
+login_manager.login_view = "auth_controller.user_login"
+login_manager.login_message = cfg.LOGIN_MSG
+login_manager.login_message_category = "warning" 
+
 
 def create_app(): 
-    global app 
     app = Flask(__name__, template_folder=cfg.VIEWS_DIR, static_folder=cfg.STATIC_DIR)
     app.config.from_object(cfg) 
-
+    
     with app.app_context(): 
         register_extention(app) 
         # routes 
-        register_blueprints(app) 
-        app.before_first_request(populate_database) 
+        register_blueprints(app)
+        register_errorhandlers(app)
+        app.before_first_request(populate_database)
     return app 
 
 def register_extention(app): 
@@ -33,6 +41,7 @@ def register_extention(app):
     db.init_app(app)
     migrate.init_app(app, db) 
     seeder.init_app(app, db) 
+    login_manager.init_app(app) 
     return None 
 
 def register_blueprints(app): 
@@ -63,3 +72,14 @@ def populate_database():
         )
         db.session.add(user) 
         db.session.commit() 
+
+
+def register_errorhandlers(app):
+    def render_error(error): 
+        error_code = getattr(error, "code", 404) 
+        return render_template('main/{0}.jinja'.format(error_code), error_code=error_code,
+                                titel="غير متوفر"), error_code
+    
+    for error_code in [404]: 
+        app.errorhandler(error_code)(render_error)
+    return None 

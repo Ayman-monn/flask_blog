@@ -9,6 +9,7 @@ class Article(db.Model):
     article_img = db.Column(db.String(50), nullable=False, default="default.png")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     likes = db.relationship("Like", backref="article", passive_deletes=True) 
+    
     def __repr__(self): 
         return f"Article('{self.user_id}'. '{self.title}')"
     

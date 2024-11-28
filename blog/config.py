@@ -7,7 +7,8 @@ load_dotenv()
 class Config():
     TESTING = False
     DEBUG = False
-
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    
 class DevelopmentCfg(Config): 
     DEBUG = True 
     APP_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -30,6 +31,8 @@ class DevelopmentCfg(Config):
     CUSTOMER_COUNT = 20
     START_DATE = datetime(2024, 9,1)
     LIKE_COUNT= 200
+
+    LOGIN_MSG = "يجب عليك الاشتراك لمشاهدة المحتوي"
 
 
 

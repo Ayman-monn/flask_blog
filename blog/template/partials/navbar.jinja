@@ -1,29 +1,34 @@
     <div class="container-fluid mb-4 nav-bg">
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand" href="#">مدونة حسوب</a>
+          <a class="navbar-brand" href="{{ url_for('main_controller.home')}}">مدونة حسوب</a>
           <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <div>
               <ul class="navbar-nav mr-auto d-flex align-items-center">
-                <li class="nav-item"><a class="nav-link" href="#">المقالات</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main_controller.home')}}">المقالات</a></li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> لوحة التحكم </a>
                   <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#">الاشتراكات</a></li>
                     <li><a class="dropdown-item" href="#">المستخدمين</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">إضافة مقالة</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('article_controller.add_article')}}">إضافة مقالة</a></li>
                     <li><a class="dropdown-item" href="#">لائحة المقالات</a></li>
                   </ul>
                 </li>
               </ul>
             </div>
             <ul class="navbar-nav mr-auto d-flex align-items-center">
-              <li class="nav-item mr-auto"><a class="nav-link" href="#">تسجيل الدخول</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">حساب جديد</a></li>
+              {% if current_user.is_authenticated %}
+                <li class="nav-item mr-auto"><a class="nav-link" href="">حسابي</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth_controller.user_logout')}}">تسجيل الخروج</a></li>
+              {% else %}
+                <li class="nav-item mr-auto"><a class="nav-link" href="{{ url_for('auth_controller.user_login')}}">تسجيل الدخول</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth_controller.user_register')}}">حساب جديد</a></li>
+              {% endif %}
             </ul>
           </div>
         </nav>
