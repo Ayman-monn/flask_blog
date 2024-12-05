@@ -1,8 +1,9 @@
 from flask import flash, redirect, render_template, request, url_for
 from blog import bcrypt, db
 from flask_login import login_required, login_user, current_user, logout_user
-from blog.forms.AuthForm import LoginForm, RegisterationForm
+from blog.forms.AuthForm import LoginForm, RegisterationForm, RequestResetForm, ResetPasswordForm
 from blog.models.AuthModel import User
+from blog.utils.AuthUtils import send_reset_email
 
 
 class UserController: 
@@ -12,7 +13,7 @@ class UserController:
         form = LoginForm() 
         if form.validate_on_submit(): 
             user = User.query.filter_by(email = form.email.data).first()
-            if user is not None or bcrypt.check_password_hash(user.password, form.password.data): 
+            if user is not None and bcrypt.check_password_hash(user.password, form.password.data): 
                 login_user(user, remember=form.remember.data)
                 flash("تم تسجيل الدخول بنجاح", "success")
                 return redirect(request.args.get("next") or url_for("main_controller.home"))
@@ -41,3 +42,32 @@ class UserController:
         logout_user() 
         flash("تم تسجيل الخروج", "warning")
         return redirect(url_for('main_controller.home'))
+
+
+    def reset_request(): 
+        if current_user.is_authenticated: 
+            return redirect(url_for('main_controller.home')) 
+        form = RequestResetForm() 
+        if form.validate_on_submit(): 
+            user = User.query.filter_by(email=form.email.data).first() 
+            send_reset_email(user) 
+            flash("تم إرسال بريد الكتروني يحوى رابط لتغيير كلمة السر", 'info')
+            return redirect(url_for("auth_controller.user_login"))
+        return render_template("auth/reset_request.jinja", form=form, title="أعادة تعيين كلمة السر")
+        
+
+    def reset_pass(token): 
+        if current_user.is_authenticated: 
+            return redirect(url_for('main_controller.home'))
+        user = User.verify_reset_token(token)
+        if user is None: 
+            flash("انتهت صلاحية الرابط حاول مرة ثانية","warning")
+            return redirect(url_for('auth_controller.reset_request'))
+        form = ResetPasswordForm() 
+        if form.validate_on_submit(): 
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user.password = hashed_password 
+            db.session.commit()  
+            flash("تم تغيير كلمة السر بنجاح، يمكنك تسجيل الدخول الآن", "success") 
+            return redirect(url_for('auth_controller.user_login'))
+        return render_template('auth/reset_pass.jinja', title="إعادة تعيين كلمة السر", form=form)

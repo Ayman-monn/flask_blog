@@ -7,105 +7,32 @@
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           <!-- Article Content  -->
+          {% for article in articles_list %}
           <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card cards">
               <a href="#">
-                <img src="../../static/images/default.png" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
+                <img src="{{ url_for('static', filename='images/'+article.article_img) }}" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
               </a>
               <div class="card-body pb-1">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">بناء مدونة بإستخدام إطار العمل فلاسك</a>
+                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">{{ article.title[:70] }}</a>
                   </li>
                   <li class="list-group-item d-flex justify-content-between card-li">
                     <p class="text-end">
-                      <small class="text-muted">كاتب محتوى</small>
+                      <small class="text-muted">{{ article.user_id.username }}</small>
                     </p>
                     <p class="text-start">
-                      <small class="text-muted">2022-10-30</small>
+                      <small class="text-muted">{{ article.created_at.strftime('%Y-%m-%d')}}</small>
                     </p>
                   </li>
-                  <li class="list-group-item text-end text-muted card-li">الإعجابات 7</li>
+                  <li class="list-group-item text-end text-muted card-li">الإعجابات {{ article.likes|length }}</li>
                 </ul>
               </div>
               <a class="btn btnCard btn-sm rounded-0 rounded-bottom" href="#"><span class="fas fa-book-open me-1"></span> تابع القراءة</a>
             </div>
           </div>
-          <!-- Article Content  -->
-          <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card cards">
-              <a href="#">
-                <img src="../../static/images/default.png" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
-              </a>
-              <div class="card-body pb-1">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">بناء مدونة بإستخدام إطار العمل فلاسك</a>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between card-li">
-                    <p class="text-end">
-                      <small class="text-muted">كاتب محتوى</small>
-                    </p>
-                    <p class="text-start">
-                      <small class="text-muted">2022-10-30</small>
-                    </p>
-                  </li>
-                  <li class="list-group-item text-end text-muted card-li">الإعجابات 7</li>
-                </ul>
-              </div>
-              <a class="btn btnCard btn-sm rounded-0 rounded-bottom" href="#"><span class="fas fa-book-open me-1"></span> تابع القراءة</a>
-            </div>
-          </div>
-          <!-- Article Content  -->
-          <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card cards">
-              <a href="#">
-                <img src="../../static/images/default.png" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
-              </a>
-              <div class="card-body pb-1">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">بناء مدونة بإستخدام إطار العمل فلاسك</a>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between card-li">
-                    <p class="text-end">
-                      <small class="text-muted">كاتب محتوى</small>
-                    </p>
-                    <p class="text-start">
-                      <small class="text-muted">2022-10-30</small>
-                    </p>
-                  </li>
-                  <li class="list-group-item text-end text-muted card-li">الإعجابات 7</li>
-                </ul>
-              </div>
-              <a class="btn btnCard btn-sm rounded-0 rounded-bottom" href="#"><span class="fas fa-book-open me-1"></span> تابع القراءة</a>
-            </div>
-          </div>
-          <!-- Article Content  -->
-          <div class="col-sm-6 col-lg-4 mb-4">
-            <div class="card cards">
-              <a href="#">
-                <img src="../../static/images/default.png" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
-              </a>
-              <div class="card-body pb-1">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">بناء مدونة بإستخدام إطار العمل فلاسك</a>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between card-li">
-                    <p class="text-end">
-                      <small class="text-muted">كاتب محتوى</small>
-                    </p>
-                    <p class="text-start">
-                      <small class="text-muted">2022-10-30</small>
-                    </p>
-                  </li>
-                  <li class="list-group-item text-end text-muted card-li">الإعجابات 7</li>
-                </ul>
-              </div>
-              <a class="btn btnCard btn-sm rounded-0 rounded-bottom" href="#"><span class="fas fa-book-open me-1"></span> تابع القراءة</a>
-            </div>
-          </div>
+            {% endfor %}
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@
                     </fieldset>
                     <div class="form-group">{{ form.submit(class="btn mainButton") }}
                         <small class="text-muted ml-2">
-                            <a href="#">نسيت كلمة السر ؟</a>
+                            <a href="{{ url_for('auth_controller.reset_request')}}">نسيت كلمة السر ؟</a>
                         </small>
                     </div>
                 </form>

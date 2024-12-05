@@ -27,3 +27,20 @@ class RegisterationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first(): 
             raise ValidationError("اسم المستخدم يجب ان يكون فريد. قم بإختيار اسم آخر")
         
+
+class RequestResetForm(FlaskForm): 
+    email = StringField("البريد الإلكتروني", validators=[DataRequired(), Email(message="البريد الالكتروني غير صالح")])
+    submit = SubmitField("استعادة كلمة السر")
+
+    def validate_email(self, field): 
+        user =  User.query.filter_by(email=field.data).first() 
+        if user is None: 
+            raise ValidationError("لا يوجد بريد مسجل بهذا الاسم")
+
+
+
+class ResetPasswordForm(FlaskForm): 
+    password = PasswordField("كلمة السر", validators=[DataRequired()])
+    conform_password = PasswordField("تأكيد كلمة السر", validators=(DataRequired(), EqualTo("password", message="كلمة السر غير متطابقة")))
+    submit = SubmitField("تغيير كلمة السر")
+    

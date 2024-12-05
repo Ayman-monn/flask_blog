@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_seeder import FlaskSeeder
 from flask_login import LoginManager
+from flask_mail import Mail
 from blog.config import DevelopmentCfg, ProductionCfg 
 
 
@@ -15,7 +16,8 @@ cfg = DevelopmentCfg()
 bcrypt = Bcrypt() 
 db = SQLAlchemy()
 migrate = Migrate() 
-seeder = FlaskSeeder() 
+seeder = FlaskSeeder()
+mail = Mail()  
 login_manager = LoginManager() 
 
 
@@ -41,6 +43,7 @@ def register_extention(app):
     db.init_app(app)
     migrate.init_app(app, db) 
     seeder.init_app(app, db) 
+    mail.init_app(app)
     login_manager.init_app(app) 
     return None 
 

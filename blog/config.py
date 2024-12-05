@@ -34,8 +34,13 @@ class DevelopmentCfg(Config):
 
     LOGIN_MSG = "يجب عليك الاشتراك لمشاهدة المحتوي"
 
-
-
+    MAIL_SERVER ='sandbox.smtp.mailtrap.io'
+    MAIL_PORT = 2525
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    RESET_MAIL = 'noreplay@blog.com' 
 
 class ProductionCfg(Config): 
     pass 
