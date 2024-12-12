@@ -10,13 +10,13 @@
           {% for article in articles_list %}
           <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card cards">
-              <a href="#">
+              <a href="{{ url_for('article_controller.article_show', id=article.id)}}">
                 <img src="{{ url_for('static', filename='images/'+article.article_img) }}" class="card-img-top bd-placeholder-img" style="max-height: 250px" alt="img" />
               </a>
               <div class="card-body pb-1">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    <a href="#" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">{{ article.title[:70] }}</a>
+                    <a href="{{ url_for('article_controller.article_show', id=article.id)}}" class="text-decoration-none link-secondary fs-5 fw-bold text-start text-break cardTitle">{{ article.title[:70] }}</a>
                   </li>
                   <li class="list-group-item d-flex justify-content-between card-li">
                     <p class="text-end">
