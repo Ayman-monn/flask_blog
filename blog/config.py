@@ -33,6 +33,8 @@ class DevelopmentCfg(Config):
     LIKE_COUNT= 200
 
     LOGIN_MSG = "يجب عليك الاشتراك لمشاهدة المحتوي"
+    
+    POSTS_PER_PAGE = 9
 
     MAIL_SERVER ='sandbox.smtp.mailtrap.io'
     MAIL_PORT = 2525
@@ -41,6 +43,7 @@ class DevelopmentCfg(Config):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     RESET_MAIL = 'noreplay@blog.com' 
+
 
 class ProductionCfg(Config): 
     pass 

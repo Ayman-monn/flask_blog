@@ -5,10 +5,13 @@ function likeArticle(articleId){
     fetch(`/article/${articleId}/like`, {method:"POST"})
     .then((res)=> res.json()).then((data)=>{
         likeCount.innerHTML = data["likes"];
+        console.log(data['liked'])
         if (data["liked"] === true){
-            likeButton.className = 'fas fa-thumbs-up fa-2x'; 
+            likeButton.class = 'fas fa-thumbs-up fa-2x'; 
+            console.log(data['liked'])
         }else{
-            likeButton.className = 'far fa-thumbs-up fa-2x'; 
+            likeButton.class = 'far fa-thumbs-up fa-2x'; 
+            console.log(data['liked'])
 
         }
     });

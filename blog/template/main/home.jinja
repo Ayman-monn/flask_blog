@@ -7,7 +7,7 @@
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           <!-- Article Content  -->
-          {% for article in articles_list %}
+          {% for article in article_per_page %}
           <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card cards">
               <a href="{{ url_for('article_controller.article_show', id=article.id)}}">
@@ -35,6 +35,9 @@
             {% endfor %}
         </div>
       </div>
+      <nav aria-label="Page navigation">
+        <div class="pagination justify-content-center">{{ pagination.links}}</div>
+      </nav>
     </div>
   </div>
 {% endblock content %}
