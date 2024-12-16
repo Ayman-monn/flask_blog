@@ -18,7 +18,7 @@
                   {# Image  #}
                   <div class="form-group mt-4">
                   {{ form.article_img.label(class='') }}
-                  {{ form.article_img(class='form-control-file form-control-file-lg')}}
+                  {{ form.article_img(class='form-control-file form-control-file-lg', onchange='image_preview(event)')}}
                   {% if form.article_img.errors %}
                     {% for error in form.article_img.errors  %}
                     <ul class="errors">
@@ -27,6 +27,15 @@
                     {% endfor %}
                   {% endif %}
                   </div>
+                </div>
+                {# Image Preview #}
+                <div class="col">
+                  <img {% if form.article_img.data %}
+                      src="{{url_for('static', filename='images/'+form.article_img.data|string)}}"
+                    {% else %}
+                      src="{{url_for('static', filename='images/default.png')}}"
+                  {% endif %}
+                  class="ImgPreviewClass" alt="Article Image"/>
                 </div>
               </div>
             </fieldset>
@@ -37,8 +46,14 @@
               {{ form.submit(class='btn mainButton')}}
             </div>
           </form>
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='content', height='300',
+            contentLangDirection='rtl', contentLanguage='ar', language='ar',
+            defaultLanguage='ar')}}
         </div>
       </div>
     </div>
   </div>
+      <script src="{{ url_for('static', filename='js/ckeditor_cfg.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/image_preview.js')}}"></script>
 {% endblock content %}

@@ -1,0 +1,57 @@
+<div class="row">
+  {# First Section Right Side #}
+  <div class="col-md-4 shadow-lg p-3 mb-5 bg-body rounded fitDiv">
+    <h3 class="textColor">معلومات المستخدم</h3>
+    <hr />
+    <h6>اسم المستخدم: {{ current_user.username }}</h6>
+    <h6>البريد الالكتروني: {{ current_user.email }}</h6>
+    <h6>صلاحية المستخدم: {{ current_user.is_admin|replace(true, "مدير")|replace(false, "مستخدم")}}</h6>
+    {% if current_user.is_admin %}
+    {% elif customer and customer.status == "active"%}
+    <br />
+    <h4>تفاصيل الاشتراك</h4>
+    <hr />
+    <h5>{{ customer.subscription_type | replace("yearly", "إشتراك سنوي") | replace("monthly", " اشتراك شهري")}}</h5>
+    <p>
+      حالة الاشتراك:
+      <span class="textColor"> {{ customer.status | replace("active", "فعال")}} / {{ customer.subscription_canceld |
+        replace(true, "تم إلغاء الإشتراك")| replace(false, "مستمر")}} </span>
+    </p>
+    <p>انتهاء الاشتراك: {{ customer.subscription_end }}</p>
+    <div class="p-1">
+      {% if customer.subscription_type == "monthly" %}
+      <a href="#" class="btn btn-sm mainButton" role="button">اشتراكٍ سنوي</a>
+      {% endif %}
+      {% if customer.subscription_canceld == true %}
+      <a href="#" class="btn btn-sm btn-success" role="button">اعادة تفعيل الاشتراك</a>
+      {% else %}
+      <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        role="button">إلغاء الاشتراك</a>
+      {% endif %}
+    </div>
+    {% else %}
+    <a href="#" class="btn btn-sm mainButton" role="button">اشترك الآن</a>
+    {% endif %}
+  </div>
+  <div class="col-1 breaker"></div>
+  {# First Section Left Side #}
+  <div class="col shadow-lg p-3 mb-5 bg-body rounded">
+    <h3 class="textColor">مقالات أعجبتني</h3>
+    <hr />
+    {% if current_user.likes %}
+    <ol>
+      {% for articles in current_user.likes %}
+
+      <li>
+        <a class="text-decoration-none link-secondary fs-6 text-start text-break" 
+        href="{{ url_for('article_controller.article_show', id=articles.article.id)}}">{{ articles.article.title}}</a>
+      </li>
+      {% endfor %}
+    </ol>
+
+    {% else %}
+
+    <p>لا يوجد مقالات</p>
+    {% endif %}
+  </div>
+</div>

@@ -10,4 +10,5 @@ AuthRouter.route("/login", methods=['POST', 'GET'])(UserController.user_login)
 AuthRouter.route("/logout")(UserController.user_logout)
 AuthRouter.route("/reset_password", methods=['POST', 'GET'])(UserController.reset_request)
 AuthRouter.route("/reset_password/<token>", methods=['POST', 'GET'])(UserController.reset_pass)
+AuthRouter.route("/account")(UserController.user_account) 
 

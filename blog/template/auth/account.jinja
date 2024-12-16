@@ -1,127 +1,16 @@
 {% extends "main/base.jinja" %}
+{# Models #}
+{% include "partials/account/modal_account.jinja" %}
+{% include "partials/modal_article.jinja" %}
 {% block content %}
   <div class="container">
-    <div class="row">
-      <div class="col-md-4 shadow-lg p-3 mb-5 bg-body rounded fitDiv">
-        <h3 class="textColor">معلومات المستخدم</h3>
-        <hr />
-        <h6>اسم المستخدم: مستحدم حسوب</h6>
-        <h6>البريد الالكتروني: user@hsoub.com</h6>
-        <h6>صلاحية المستخدم: مشترك</h6>
-        <br />
-        <h4>تفاصيل الاشتراك</h4>
-        <hr />
-        <h5>اشتراك شهري</h5>
-        <p>
-          حالة الاشتراك:
-          <span class="textColor"> الاشتراك فعال أو ملغي </span>
-        </p>
-        <p>انتهاء الاشتراك: ###</p>
-        <div class="p-1">
-          <a href="#" class="btn btn-sm mainButton" role="button">اشتراكٍ سنوي</a>
-          <a href="#" class="btn btn-sm btn-success" role="button">اعادة تفعيل الاشتراك</a>
-          <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" role="button">إلغاء الاشتراك</a>
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">إلغاء الاشتراك</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <ul>
-                    <li>هل أنت متيقن من رغبتك في إلغاء الاشتراك؟</li>
-                    <li>في حال موافقتك سيتم إلغاء عملية الاشتراك التلقائي، ولن تتمكن من الوصول لمحتوى المقالات عند انتهاء مدة اشتراكك الموضحة ضمن صفحتك الشخصية.</li>
-                    <li>يمكنك أيضا إعادة تفعيل الاشتراك قبل نهاية مدة الاشتراك.</li>
-                    <li>في حال رغبت بحذف اشتراكك تماما يمكنك مراسلة إدارة الموقع.</li>
-                  </ul>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">تراجع</button>
-                  <a href="#" class="btn btn-sm btn-danger" role="button">إلغاء اشتراكي</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <a href="#" class="btn btn-sm mainButton" role="button">اشترك الآن</a>
-      </div>
-      <div class="col-1 breaker"></div>
-      <div class="col shadow-lg p-3 mb-5 bg-body rounded">
-        <h3 class="textColor">مقالات أعجبتني</h3>
-        <hr />
-        <ol>
-          <li>
-            <a class="text-decoration-none link-secondary fs-6 text-start text-break" href="#">مقالة أولى</a>
-          </li>
-          <li>
-            <a class="text-decoration-none link-secondary fs-6 text-start text-break" href="#">مقالة ثانية</a>
-          </li>
-        </ol>
-        <p>لا يوجد مقالات</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col shadow-lg p-3 mb-5 bg-body rounded">
-        <h3 class="textColor">مقالاتي</h3>
-        <hr />
-        <div class="table-responsive">
-          <table class="table text-center">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">الإجراء</th>
-                <th scope="col">المقالات</th>
-                <th scope="col">تاريخ النشر</th>
-                <th scope="col">الإعجابات</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="align-middle">
-                <td></td>
-                <td>
-                  <div class="d-flex justify-content-center">
-                    <div class="btn-group">
-                      <div>
-                        <a href="#" class="btn btn-sm mainButtonWhite" role="button">تعديل</a>
-                      </div>
-                      <div>
-                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#articleModal" role="button">حذف</a>
-                        <!-- Modal -->
-                        <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content ss">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="articleModalLabel">حذف المقالة</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body overflow-auto"></div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                                <a href="#" class="btn btn-sm btn-danger" id="delBtn" role="button">حذف</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <a href="#" class="text-decoration-none link-secondary fs-6 text-start text-break">عنوان المقالة</a>
-                </td>
-                <td>2023/01/01</td>
-                <td>99</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p>لم تكتب أي مقال حتى الآن.</p>
-      </div>
-    </div>
+    {# User Details Section #}
+    {% include "partials/account/user_detail.jinja" %}
+    {# User Articles Section #}
+    {% if current_user.is_admin %}
+      {% include "partials/account/user_articles.jinja" %}
+    {% endif %}
   </div>
+  <script src="{{ url_for('static', filename='js/modal_article.js')}}"></script>
 {% endblock content %}
 

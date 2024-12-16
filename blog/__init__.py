@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_seeder import FlaskSeeder
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_ckeditor import CKEditor
 from blog.config import DevelopmentCfg, ProductionCfg 
 
 
@@ -19,6 +20,8 @@ migrate = Migrate()
 seeder = FlaskSeeder()
 mail = Mail()  
 login_manager = LoginManager() 
+ckeditor = CKEditor()
+
 
 
 login_manager.login_view = "auth_controller.user_login"
@@ -45,6 +48,7 @@ def register_extention(app):
     seeder.init_app(app, db) 
     mail.init_app(app)
     login_manager.init_app(app) 
+    ckeditor.init_app(app) 
     return None 
 
 def register_blueprints(app): 

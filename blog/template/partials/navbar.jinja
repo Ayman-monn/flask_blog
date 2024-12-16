@@ -9,21 +9,33 @@
             <div>
               <ul class="navbar-nav mr-auto d-flex align-items-center">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('main_controller.home')}}">المقالات</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> لوحة التحكم </a>
-                  <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">الاشتراكات</a></li>
-                    <li><a class="dropdown-item" href="#">المستخدمين</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="{{ url_for('article_controller.article_add')}}">إضافة مقالة</a></li>
-                    <li><a class="dropdown-item" href="#">لائحة المقالات</a></li>
-                  </ul>
-                </li>
+                {% if current_user.username=="owner" %}
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> لوحة التحكم </a>
+                    <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">الاشتراكات</a></li>
+                      <li><a class="dropdown-item" href="#">المستخدمين</a></li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li><a class="dropdown-item" href="{{ url_for('article_controller.article_add')}}">إضافة مقالة</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('article_controller.articles_list')}}">لائحة المقالات</a></li>
+                    </ul>
+                  </li>                
+                {% elif current_user.username != "owner" and current_user.is_admin == true %}
+                    <li><a class="dropdown-item" href="{{ url_for('article_controller.article_add')}}">إضافة مقالة جديدة</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('article_controller.articles_list')}}">لائحة المقالات</a></li>
+                {% elif current_user.stripe_customers and current_user.stripe_customers[0].status == "active" %}
+                {% else %}
+                    <li class="nav-item">
+                      <a class="btn btn-sm mainButton" 
+                      href="#">إشترك الآن</a>
+                    </li>
+                {% endif %}
+
               </ul>
             </div>
             <ul class="navbar-nav mr-auto d-flex align-items-center">
               {% if current_user.is_authenticated %}
-                <li class="nav-item mr-auto"><a class="nav-link" href="">حسابي</a></li>
+                <li class="nav-item mr-auto"><a class="nav-link" href="{{ url_for('auth_controller.user_account')}}">حسابي {{ current_user.username }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('auth_controller.user_logout')}}">تسجيل الخروج</a></li>
               {% else %}
                 <li class="nav-item mr-auto"><a class="nav-link" href="{{ url_for('auth_controller.user_login')}}">تسجيل الدخول</a></li>
