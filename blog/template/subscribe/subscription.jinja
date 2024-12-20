@@ -14,7 +14,8 @@
                 <li>اشتراك شهري يتم تجديده تلقائيا</li>
                 <li>الإطلاع على محتوى وفير</li>
               </ul>
-              <form action="#" method="post">
+              <form action="{{ url_for('subscirbe_controller.subscription_create')}}" method="post">
+                <input type="hidden" name="priceId" value="{{prices.MONTHLY_SUBSCRIPTION}}">
                 <button type="submit" id="checkout-button" class="mainButtonWhite w-100 btn btn-lg btn-outline-secondary">اشترك شهريا</button>
               </form>
             </div>
@@ -31,7 +32,8 @@
                 <li>وفر 20$ عبر اشتراك سنوي</li>
                 <li>الإطلاع على محتوى وفير</li>
               </ul>
-              <form action="#" method="post">
+              <form action="{{ url_for('subscirbe_controller.subscription_create')}}" method="post">
+                <input type="hidden" name="priceId" value="{{prices.YEARLY_SUBSCRIPTION}}">
                 <button type="submit" id="checkout-button" class="mainButtonWhite w-100 btn btn-lg btn-outline-secondary">اشترك سنويا</button>
               </form>
             </div>

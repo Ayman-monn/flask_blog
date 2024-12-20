@@ -6,6 +6,7 @@ from flask_seeder import FlaskSeeder
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_ckeditor import CKEditor
+import stripe
 from blog.config import DevelopmentCfg, ProductionCfg 
 
 
@@ -23,6 +24,7 @@ login_manager = LoginManager()
 ckeditor = CKEditor()
 
 
+stripe.api_key = cfg.STRIPE_SECRET_KEY
 
 login_manager.login_view = "auth_controller.user_login"
 login_manager.login_message = cfg.LOGIN_MSG
