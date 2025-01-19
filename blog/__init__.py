@@ -1,3 +1,6 @@
+import mimetypes
+mimetypes.add_type('application/javascript', '.js')
+
 from flask import Flask, render_template
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy 

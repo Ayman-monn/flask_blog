@@ -1,12 +1,15 @@
-from blog import cfg, db
-from flask import flash, redirect, render_template, url_for,request
+import json
+from blog import cfg, db, stripe
+from flask import flash, jsonify, redirect, render_template, url_for,request
 from flask_login import current_user, login_required
-import stripe
 from blog.models.SubscribeModel import StripeCustomer
-from blog.utils.SubscribeUtils import stripe_subscription_create 
+from blog.utils.SubscribeUtils import handle_subscription_db, stripe_subscription_create 
 
 
 class SubscibeController:
+    def get_publishable_key():
+        return jsonify(publicKey=cfg.STRIPE_PUBLISHABLE_KEY) 
+    
     def subscription():
         if current_user.is_anonymous: 
             return render_template('subscribe/subscription.jinja', prices=cfg.prices, title="اشترك")
@@ -27,24 +30,63 @@ class SubscibeController:
             flash("يمكنك تعديل الإشتراك من صفحتك الشخصية", "warning") 
             return redirect(url_for('main_controller.home')) 
         try:
-            price_id = request.form.get("price_id")
+            price_id = request.form.get("priceId")
             if not customer:
                 new_customer = stripe.Customer.create(email=current_user.email, name=current_user.username)
                 subscription = stripe_subscription_create(new_customer.id, price_id)
                 customer_db = StripeCustomer(
                     user_id= current_user.id, 
-                    customer_id=new_customer.id, 
+                    customer_id=new_customer.id,
                     subscription_id=subscription.id 
                 )
-                db.session.add(customer_db)
-                db.session.commit()
+                db.session.add(customer_db) 
+                db.session.commit() 
             else: 
                 subscription = stripe_subscription_create(customer.customer_id, price_id)
                 customer.subscription_id= subscription.id
                 db.session.commit() 
-            sub_description = subscription["latest"]['lines']['data'][0]['description']
+            sub_description = subscription["latest_invoice"]['lines']['data'][0]['description']
+            print('sub_description',sub_description)
             client_secret = subscription.latest_invoice.payment_intent.client_secret
+            print("client_secret", client_secret)
             return render_template('subscribe/payment.jinja', sub_description=sub_description, client_secret=client_secret)
         except: 
             flash("حدث خطأ, يمكنك المحاولة لاحقاً", "warning")
-            return redirect(url_for("subscription_controller.subscription"))
+            return redirect(url_for("subscirbe_controller.subscription"))
+        
+
+    def webhook_received():
+        request_data = json.loads(request.data) 
+        webhook_secret = cfg.STRIPE_WEBHOOK_SECRET 
+        if webhook_secret: 
+            signature = request.headers.get('stripe-signature') 
+            try: 
+                event = stripe.Webhook.construct_event(
+                    payload=request.data, sig_header=signature, secret=webhook_secret
+                )
+                data = event["data"]
+            except Exception as e : 
+                return e 
+            event_type = event["type"]
+        else: 
+            data = request_data["data"]
+            event_type = request_data["type"]
+        data_object = data["object"]
+        if event_type == "customer.subscription.updated":
+            handle_subscription_db(data_object)
+            print(f'تم إنشاء كائن اشتراك {event.id}')
+        elif event_type == "invoice.paid": 
+            print("payment successed")
+        return jsonify({"satuts" : "success"})
+
+    @login_required
+    def subscription_success(): 
+        payment_intent_success = request.args.get('paymentIntentStatus') 
+        if payment_intent_success is None: 
+            flash('يمكنك مشاهدة تفاصيل الإشتراك من صفحتك الشخصية', 'warning')
+            return redirect(url_for('auth_controller.user_account'))
+        if payment_intent_success == 'succeeded': 
+            return render_template('subscribe/payment_success.jinja', title='تم الإشتراك')
+        else: 
+            flash('حدث خطأ أثناء عملية الدفع تحقق من صفحتك الشخصية', 'warning')
+            return redirect(url_for('auth_controller.user_account'))

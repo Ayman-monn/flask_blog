@@ -50,6 +50,7 @@ class DevelopmentCfg(Config):
     # STRIPE_KEYS
     STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
     # STRIPE_PRICE
     prices = {
         "YEARLY_SUBSCRIPTION" : os.environ.get("YEARLY_SUBSCRIPTION"),
