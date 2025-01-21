@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, request, url_for
-from blog import bcrypt, db
+from blog import bcrypt, db, cfg
 from flask_login import login_required, login_user, current_user, logout_user
 from flask_paginate import Pagination
 from blog.forms.AuthForm import (
@@ -105,6 +105,6 @@ class UserController:
         customer = StripeCustomer.query.filter_by(user_id=current_user.id).first()
         if customer and customer.subscription_id is not None:
             title = f"حسابي {current_user.username}"
-            return render_template("auth/account.jinja", title=title, customer=customer)
+            return render_template("auth/account.jinja", title=title, customer=customer, prices=cfg.prices)
         else:
             return render_template("auth/account.jinja")

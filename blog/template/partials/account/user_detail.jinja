@@ -11,7 +11,7 @@
     <br />
     <h4>تفاصيل الاشتراك</h4>
     <hr />
-    <h5>{{ customer.subscription_type | replace("yearly", "إشتراك سنوي") | replace("monthly", " اشتراك شهري")}}</h5>
+    <h5>{{ customer.subscription_type | replace("year", "إشتراك سنوي") | replace("month", " اشتراك شهري")}}</h5>
     <p>
       حالة الاشتراك:
       <span class="textColor"> {{ customer.status | replace("active", "فعال")}} / {{ customer.subscription_canceld |
@@ -19,8 +19,8 @@
     </p>
     <p>انتهاء الاشتراك: {{ customer.subscription_end }}</p>
     <div class="p-1">
-      {% if customer.subscription_type == "monthly" %}
-      <a href="#" class="btn btn-sm mainButton" role="button">اشتراكٍ سنوي</a>
+      {% if customer.subscription_type == "month" %}
+      <a href="{{ url_for('subscirbe_controller.upgrade_verifying', price_id=prices.YEARLY_SUBSCRIPTION)}}" class="btn btn-sm mainButton" role="button">اشتراكٍ سنوي</a>
       {% endif %}
       {% if customer.subscription_canceld == true %}
       <a href="#" class="btn btn-sm btn-success" role="button">اعادة تفعيل الاشتراك</a>

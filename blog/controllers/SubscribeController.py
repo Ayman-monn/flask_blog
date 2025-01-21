@@ -3,7 +3,7 @@ from blog import cfg, db, stripe
 from flask import flash, jsonify, redirect, render_template, url_for,request
 from flask_login import current_user, login_required
 from blog.models.SubscribeModel import StripeCustomer
-from blog.utils.SubscribeUtils import handle_subscription_db, stripe_subscription_create 
+from blog.utils.SubscribeUtils import handle_subscription_db, stripe_subscription_create, subscription_modify, upgrade_details 
 
 
 class SubscibeController:
@@ -90,3 +90,42 @@ class SubscibeController:
         else: 
             flash('حدث خطأ أثناء عملية الدفع تحقق من صفحتك الشخصية', 'warning')
             return redirect(url_for('auth_controller.user_account'))
+        
+
+    @login_required
+    def upgrade_verifying(price_id): 
+        if current_user.is_admin: 
+            flash("لا يمكن للمدير الإشتراك", "warning")
+            return redirect(url_for('main_controller.home')) 
+        if current_user.stripe_customer[0].subscription_canceld: 
+            flash("قم بتفعيل الإشتراك أولاً", "warning")
+            return redirect(url_for('auth_controller.user_account')) 
+
+        try:
+            new_details = upgrade_details(price_id)
+            print(new_details)
+            return render_template('subscribe/upgrade_subscribe.jinja', new_details=new_details, price_id=price_id)
+        except:
+            flash('حدث خطأ أثناء ترقية الإشتراك', 'warning')
+            return redirect(url_for('main_controller.home'))
+        
+
+    @login_required
+    def subscription_upgrade(price_id): 
+        if current_user.is_admin: 
+            flash("لا يمكن للمدير الإشتراك", "warning")
+            return redirect(url_for('main_controller.home')) 
+        customer = StripeCustomer.query.filter_by(user_id=current_user.id).first()
+        if current_user.stripe_customer[0].subscription_canceld: 
+            flash("قم بتفعيل الإشتراك أولاً", "warning")
+            return redirect(url_for('auth_controller.user_account')) 
+
+        try:
+            subscription_modify(price_id, customer.subscription_id)
+
+            flash('تم تغيير الإشتراك بنجاح', 'success')
+            return redirect(url_for('auth_controller.user_account'))
+        except:
+            flash('حدث خطأ أثناء ترقية الإشتراك', 'warning')
+            return redirect(url_for('main_controller.home'))
+        
