@@ -77,6 +77,12 @@ class SubscibeController:
             print(f'تم إنشاء كائن اشتراك {event.id}')
         elif event_type == "invoice.paid": 
             print("payment successed")
+        elif event_type == 'setup_intent.created':
+            print('تم إنشاء كائن Setup Intent')
+        elif event_type == 'setup_intent.succeeded':
+            print('تم إضافة طريقة دفع جديدة لعمليات الدفع المستقبلية')
+        elif event_type == 'payment_method.attached':
+            print('تم إضافة طريقة الدفع الجديدة إلي كائن العميل')
         return jsonify({"satuts" : "success"})
 
     @login_required
@@ -129,3 +135,18 @@ class SubscibeController:
             flash('حدث خطأ أثناء ترقية الإشتراك', 'warning')
             return redirect(url_for('main_controller.home'))
         
+    @login_required
+    def change_payment_method():
+        if current_user.is_admin: 
+            flash("لا يمكنك الوصول للصفحة المطلوبة", "warning")
+            return redirect(url_for('main_controller.home')) 
+        if current_user.stripe_customer[0].subscription_canceld: 
+            flash("قم بتفعيل الإشتراك أولاً", "warning")
+            return redirect(url_for('auth_controller.user_account')) 
+        return render_template('subscribe/change_payment_method.jinja') 
+
+
+    def create_setup_intent(): 
+        customer = current_user.stripe_customer[0]
+        setup_intent = stripe.SetupIntent.create(customer=customer.customer_id)
+        return jsonify(setup_intent)

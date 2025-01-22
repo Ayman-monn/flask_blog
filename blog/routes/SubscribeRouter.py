@@ -11,4 +11,6 @@ SubscribeRouter.route('/webhook', methods=["POST"])(SubscibeController.webhook_r
 SubscribeRouter.route('/subscription-success', methods=['GET'])(SubscibeController.subscription_success)
 SubscribeRouter.route('/upgrade-verifying/<price_id>', methods=['GET'])(SubscibeController.upgrade_verifying)
 SubscribeRouter.route('/upgrade-subscription/<price_id>', methods=['GET'])(SubscibeController.subscription_upgrade)
+SubscribeRouter.route('/create-setup-intent', methods=['POST'])(SubscibeController.create_setup_intent)
+SubscribeRouter.route('/update-payment', methods=['GET'])(SubscibeController.change_payment_method)
 
