@@ -23,9 +23,9 @@
       <a href="{{ url_for('subscirbe_controller.upgrade_verifying', price_id=prices.YEARLY_SUBSCRIPTION)}}" class="btn btn-sm mainButton" role="button">اشتراكٍ سنوي</a>
       {% endif %}
       {% if customer.subscription_canceld == true %}
-      <a href="#" class="btn btn-sm btn-success" role="button">اعادة تفعيل الاشتراك</a>
+      <a href="{{ url_for('subscirbe_controller.subsciption_cancel', is_canceled=False)}}" class="btn btn-sm btn-success" role="button">اعادة تفعيل الاشتراك</a>
       {% else %}
-      <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      <a href="{{ url_for('subscirbe_controller.subsciption_cancel', is_canceled=True)}}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
         role="button">إلغاء الاشتراك</a>
       {% endif %}
     </div>

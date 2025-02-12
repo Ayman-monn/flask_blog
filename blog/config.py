@@ -39,6 +39,7 @@ class DevelopmentCfg(Config):
 
     POSTS_PER_PAGE = 9
     RECORD_PER_PAGE = 20
+    USERS_PER_PAGE = 25
     MAIL_SERVER = "sandbox.smtp.mailtrap.io"
     MAIL_PORT = 2525
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")

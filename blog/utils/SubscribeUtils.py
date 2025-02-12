@@ -76,7 +76,12 @@ def subscription_modify(price_id, id):
         items=[{
             'id': session['item_id'],
             'price': price_id, 
-
         }]
+    )
+
+def subscirbe_isCanceled(sub_id, is_canceled): 
+    stripe.Subscription.modify(
+        sub_id,
+        cancel_at_period_end=is_canceled
     )
     

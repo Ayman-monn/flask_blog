@@ -3,7 +3,7 @@ from blog import cfg, db, stripe
 from flask import flash, jsonify, redirect, render_template, url_for,request
 from flask_login import current_user, login_required
 from blog.models.SubscribeModel import StripeCustomer
-from blog.utils.SubscribeUtils import handle_subscription_db, stripe_subscription_create, subscription_modify, upgrade_details 
+from blog.utils.SubscribeUtils import handle_subscription_db, stripe_subscription_create, subscirbe_isCanceled, subscription_modify, upgrade_details 
 
 
 class SubscibeController:
@@ -150,3 +150,22 @@ class SubscibeController:
         customer = current_user.stripe_customer[0]
         setup_intent = stripe.SetupIntent.create(customer=customer.customer_id)
         return jsonify(setup_intent)
+    
+    @login_required
+    def subsciption_cancel(is_canceled): 
+        if current_user.is_admin:
+            flash('لا يمكنك الوصول للصفحة المطلوبة', 'warning')
+            return redirect(url_for('main_controller.home'))
+        
+        try: 
+            customer = StripeCustomer.query.filter_by(user_id=current_user.id).first()
+            if customer.status == "active": 
+                subscirbe_isCanceled(customer.subscription_id, is_canceled)
+                if not customer.subscription_canceld:
+                    flash('تم إلغاء الإشتراك بنجاح، ستتمكن من قراءة المقالات حتي إنتهاء فترة الإشتراك، حتي تلك الفترة يمكنك تفعيل الإشتراك اذا كنت ترغب بذلك','warning')
+                else: 
+                    flash('تم إعادةتفعيل الإشتراك، شكرًا لك', 'warning')
+            return redirect(url_for('auth_controller.user_account'))
+        except:
+            flash('حدث خطأ أثناء إلغاء الإشتراك', 'warning')
+            return redirect(url_for('main_controller.home'))

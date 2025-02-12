@@ -13,4 +13,5 @@ SubscribeRouter.route('/upgrade-verifying/<price_id>', methods=['GET'])(Subscibe
 SubscribeRouter.route('/upgrade-subscription/<price_id>', methods=['GET'])(SubscibeController.subscription_upgrade)
 SubscribeRouter.route('/create-setup-intent', methods=['POST'])(SubscibeController.create_setup_intent)
 SubscribeRouter.route('/update-payment', methods=['GET'])(SubscibeController.change_payment_method)
+SubscribeRouter.route('/cancel-subscription/<is_canceled>', methods=['GET'])(SubscibeController.subsciption_cancel)
 
